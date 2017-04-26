@@ -5,9 +5,7 @@ var actions = require('actions');
 //To export component that is not connected to store
 export var AddTodo = React.createClass({
     onFormSubmit: function(e) {
-        
-        e.preventDefault();
-        
+       e.preventDefault();
        var {dispatch} = this.props;
        var todoText = this.refs.todo.value;
         
@@ -17,8 +15,8 @@ export var AddTodo = React.createClass({
         } else {
             this.refs.todo.focus();
         }
-        
     }, 
+    
     render: function() {
         return (
             <div className='container__footer'>
