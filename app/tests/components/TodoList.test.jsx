@@ -1,12 +1,13 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var {Provider} = require('react-redux');
 var expect = require('expect');
 var $ = require('jQuery');
 var TestUtils = require('react-addons-test-utils');
 
-
-var TodoList = require('TodoList');
-var Todo = require('Todo');
+import {configure} from 'configureStore';
+import ConnectedTodoList, {TodoList} from 'TodoList';
+import ConnectedTodo, {Todo} from 'Todo';
 
 describe('TodoList', () => {
     
@@ -18,18 +19,33 @@ describe('TodoList', () => {
         var todos = [
             {
                 id: 1,
-                text: 'Do something'
+                text: 'Do something',
+                completed: false,
+                completedAt: null,
+                createdAt: 500
             },
             {
                 id: 2, 
-                text: 'Check mail'
+                text: 'Check mail',
+                completed: false,
+                completedAt: null,
+                createdAt: 500
             }
         ];
         
-        var todoList = TestUtils.renderIntoDocument(<TodoList todos={todos}/>);
- 
+        var store = configure({
+            todos
+        });
+        
+        var provider = TestUtils.renderIntoDocument(
+            <Provider store={store}>
+                <ConnectedTodoList/>
+            </Provider>
+        );
+        
+        var todoList = TestUtils.scryRenderedComponentsWithType(provider, ConnectedTodoList)[0];
         //lets to check how many of a given component are rendered under a ceperate component 
-        var todosComponents = TestUtils.scryRenderedComponentsWithType(todoList, Todo);
+        var todosComponents = TestUtils.scryRenderedComponentsWithType(todoList, ConnectedTodo);
         
         expect(todosComponents.length).toBe(todos.length);
     });
